@@ -4,6 +4,10 @@
  * 
  * java MazeSolverMain infile.txt
  * 
+ * This program is loosely based on the problem and strategy described by
+ * Mike Pound in this video https://www.youtube.com/watch?v=rop0W4QDOUI
+ * 
+ * 
  * Notes on Program:
  * 
  * 
