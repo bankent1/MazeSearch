@@ -1,5 +1,6 @@
 /**
  * Author: Travis Banken
+ * MazeSearchMain.java
  * 
  * java MazeSolverMain infile.txt
  * 
