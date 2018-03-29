@@ -34,6 +34,11 @@ public class MazeSearchMain {
 		infile.close();
 	}
 	
+	/*
+	 * getMazeDim reads through the infile and counts the rows and columns
+	 * 
+	 * Returns an array of the row and col int values
+	 */
 	public static int[] getMazeDim(Scanner in) {
 		int rows = 1;
 		int col = 0;
