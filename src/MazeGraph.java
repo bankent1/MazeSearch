@@ -11,13 +11,13 @@ public class MazeGraph {
 	int size = 0;
 	
 	public void addNode(Node n) {
+		n.setIndex(size);
 		allNodes.add(n);
 		size++;
 	}
 	
-	public void setStartEnd() {
-		allNodes.get(0).makeStart();
-		allNodes.get(size-1).makeEnd();
+	public Node getNode(int i) {
+		return allNodes.get(i);
 	}
 	
 	public int size() {
