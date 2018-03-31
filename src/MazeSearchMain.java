@@ -113,6 +113,7 @@ public class MazeSearchMain {
 					continue;
 				}
 				if (r == (dim[0] - 1)) { // last row
+					System.out.println(c);
 					node.addNeighbor(mGraph.getNode(colNeighbor[c]));
 					mGraph.getNode(colNeighbor[c]).addNeighbor(node);
 					mGraph.addNode(node);
@@ -121,6 +122,22 @@ public class MazeSearchMain {
 				if (maze[r][c-1] == '0' && maze[r][c+1] == '0') { // no decision point
 					continue;
 				}
+//				if (maze[r-1][c] == '1' && maze[r+1][c] == '0') { // path below with no walls either side
+//					System.out.println(c);
+//					if (rowNeighbor != -1) {
+//						node.addNeighbor(mGraph.getNode(rowNeighbor));
+//						mGraph.getNode(rowNeighbor).addNeighbor(node);
+//					}
+//					if (colNeighbor[c] != -1) {
+//						node.addNeighbor(mGraph.getNode(colNeighbor[c]));
+//						mGraph.getNode(colNeighbor[c]).addNeighbor(node);
+//					}
+//					mGraph.addNode(node);
+//					rowNeighbor = node.getIndex();
+//					colNeighbor[c] = node.getIndex();
+//				}
+				boolean eitherSide = (maze[r][c+1] == '1' && maze[r][c-1] == '1');
+				
 				if (maze[r][c-1] == '0') { // start of a corridor
 					if (colNeighbor[c] != -1) {
 						node.addNeighbor(mGraph.getNode(colNeighbor[c]));
@@ -130,7 +147,7 @@ public class MazeSearchMain {
 					rowNeighbor = node.getIndex();
 					colNeighbor[c] = node.getIndex();
 				}
-				else if (maze[r][c+1] == '0') { // end of a corridor
+				else if (maze[r][c+1] == '0' || (eitherSide && (maze[r+1][c] == '1' || maze[r-1][c] == '1'))) { // end of a corridor
 					if (rowNeighbor != -1) {
 						node.addNeighbor(mGraph.getNode(rowNeighbor));
 						mGraph.getNode(rowNeighbor).addNeighbor(node);
@@ -143,7 +160,9 @@ public class MazeSearchMain {
 					rowNeighbor = node.getIndex();
 					colNeighbor[c] = node.getIndex();
 				}
+				
 			}
+			
 		} // end nested for
 		
 		return mGraph;

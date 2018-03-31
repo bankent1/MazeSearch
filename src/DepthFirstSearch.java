@@ -24,7 +24,7 @@ public class DepthFirstSearch {
 		int[] loc = curr.getLoc();
 		maze[loc[0]][loc[1]] = 'X';
 		if (curr.getIndex() == (mGraph.size() - 1)) {
-			//System.out.println("BASED");
+			System.out.println("BASED");
 			process(maze);
 			return true;
 		}
