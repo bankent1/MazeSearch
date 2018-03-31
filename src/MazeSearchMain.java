@@ -22,20 +22,24 @@ public class MazeSearchMain {
 	public static void main(String[] args) throws FileNotFoundException{
 		Scanner infile = new Scanner(new File(args[0]));
 		
-		// TODO: build maze
+		// read in maze and build the graph representation of maze
 		int[] dim = getMazeDim(infile);
 		System.out.println("Size = " + dim[0] + "x" + dim[1]);
 		infile = new Scanner(new File(args[0]));
 		char[][] maze = buildMaze(infile, dim);
-		//System.out.println(maze[0][2]);
 		
-		// TODO: place nodes
+		// places nodes at decision points
 		MazeGraph mGraph = placeNodes(maze, dim);
 		System.out.println("Nodes = " + mGraph.size());
 		
-		// TODO: search maze
+		// searches maze for solution and times result
+		System.out.print("Finding Solution...");
+		long startTime = System.nanoTime();
 		DepthFirstSearch.search(mGraph, maze, mGraph.getNode(0));
-		
+		long endTime = System.nanoTime();
+		System.out.println("...done");
+		long duration = (endTime - startTime) / 1000000;
+		System.out.println("Solution found in " + duration + "ms");
 		infile.close();
 	}
 	
@@ -113,7 +117,7 @@ public class MazeSearchMain {
 					continue;
 				}
 				if (r == (dim[0] - 1)) { // last row
-					System.out.println(c);
+					//System.out.println(c);
 					node.addNeighbor(mGraph.getNode(colNeighbor[c]));
 					mGraph.getNode(colNeighbor[c]).addNeighbor(node);
 					mGraph.addNode(node);
@@ -122,22 +126,8 @@ public class MazeSearchMain {
 				if (maze[r][c-1] == '0' && maze[r][c+1] == '0') { // no decision point
 					continue;
 				}
-//				if (maze[r-1][c] == '1' && maze[r+1][c] == '0') { // path below with no walls either side
-//					System.out.println(c);
-//					if (rowNeighbor != -1) {
-//						node.addNeighbor(mGraph.getNode(rowNeighbor));
-//						mGraph.getNode(rowNeighbor).addNeighbor(node);
-//					}
-//					if (colNeighbor[c] != -1) {
-//						node.addNeighbor(mGraph.getNode(colNeighbor[c]));
-//						mGraph.getNode(colNeighbor[c]).addNeighbor(node);
-//					}
-//					mGraph.addNode(node);
-//					rowNeighbor = node.getIndex();
-//					colNeighbor[c] = node.getIndex();
-//				}
-				boolean eitherSide = (maze[r][c+1] == '1' && maze[r][c-1] == '1');
 				
+				boolean eitherSide = (maze[r][c+1] == '1' && maze[r][c-1] == '1');
 				if (maze[r][c-1] == '0') { // start of a corridor
 					if (colNeighbor[c] != -1) {
 						node.addNeighbor(mGraph.getNode(colNeighbor[c]));
@@ -147,7 +137,9 @@ public class MazeSearchMain {
 					rowNeighbor = node.getIndex();
 					colNeighbor[c] = node.getIndex();
 				}
-				else if (maze[r][c+1] == '0' || (eitherSide && (maze[r+1][c] == '1' || maze[r-1][c] == '1'))) { // end of a corridor
+				else if (maze[r][c+1] == '0' || (eitherSide && (maze[r+1][c] == '1'
+						|| maze[r-1][c] == '1'))) { // end of corridor or junction
+					
 					if (rowNeighbor != -1) {
 						node.addNeighbor(mGraph.getNode(rowNeighbor));
 						mGraph.getNode(rowNeighbor).addNeighbor(node);

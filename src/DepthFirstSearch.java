@@ -24,7 +24,7 @@ public class DepthFirstSearch {
 		int[] loc = curr.getLoc();
 		maze[loc[0]][loc[1]] = 'X';
 		if (curr.getIndex() == (mGraph.size() - 1)) {
-			System.out.println("BASED");
+			//System.out.println("BASED");
 			process(maze);
 			return true;
 		}
@@ -32,17 +32,13 @@ public class DepthFirstSearch {
 			return false;
 		}
 		curr.mark();
-//		int[] loc = curr.getLoc();
-//		maze[loc[0]][loc[1]] = 'X';
 		for (Node n : curr.getNeighbors()) {
-			//System.out.println("CHECKING N");
 			if (search(mGraph, maze, n)) {
 				return true;
 			}
 		}
 		curr.unmark();
 		maze[loc[0]][loc[1]] = '1';
-		//System.out.println("END");
 		return false;
 	}
 	
