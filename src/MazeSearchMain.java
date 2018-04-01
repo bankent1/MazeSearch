@@ -15,6 +15,7 @@
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MazeSearchMain {
@@ -35,7 +36,7 @@ public class MazeSearchMain {
 		// searches maze for solution and times result
 		System.out.print("Finding Solution...");
 		long startTime = System.nanoTime();
-		DepthFirstSearch.search(mGraph, maze, mGraph.getNode(0));
+		DepthFirstSearch.search(mGraph, maze, mGraph.getNode(0), new ArrayList<Node>());
 		long endTime = System.nanoTime();
 		System.out.println("...done");
 		long duration = (endTime - startTime) / 1000000;
