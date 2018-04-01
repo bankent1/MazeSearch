@@ -8,7 +8,10 @@
  * Mike Pound in this video https://www.youtube.com/watch?v=rop0W4QDOUI
  * 
  * 
- * Notes on Program:
+ * Notes on Program: This program will solve a binary maze. A binary maze 
+ * is a nxm block of 0's and 1's where 0 represents a wall and 1 represents
+ * a path. The maze is read from a .txt file as input and prints out the
+ * solved maze in a file named DFS.txt.
  * 
  * 
  */
