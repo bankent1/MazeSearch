@@ -25,6 +25,7 @@ public class MazeSearchMain {
 	
 	public static void main(String[] args) throws FileNotFoundException{
 		Scanner infile = new Scanner(new File(args[0]));
+		System.out.println("File: " + args[0]);
 		
 		// read in maze and build the graph representation of maze
 		int[] dim = getMazeDim(infile);
@@ -39,11 +40,16 @@ public class MazeSearchMain {
 		// searches maze for solution and times result
 		System.out.print("Finding Solution...");
 		long startTime = System.nanoTime();
-		DepthFirstSearch.search(mGraph, maze, mGraph.getNode(0), new ArrayList<Node>());
-		long endTime = System.nanoTime();
-		System.out.println("...done");
-		long duration = (endTime - startTime) / 1000000;
-		System.out.println("Solution found in " + duration + "ms");
+		if(DepthFirstSearch.search(mGraph, maze, mGraph.getNode(0), new ArrayList<Node>())) {
+			long endTime = System.nanoTime();
+			System.out.println("...done");
+			long duration = (endTime - startTime) / 1000000;
+			System.out.println("Solution found in " + duration + "ms");
+		}
+		else {
+			System.out.println("\nSolution could not be found");
+		}
+
 		infile.close();
 	}
 	
@@ -127,7 +133,11 @@ public class MazeSearchMain {
 					mGraph.addNode(node);
 					continue;
 				}
+				//System.out.println("Row: " + r + " Col: " + c);
+				//System.out.println("Char: " + maze[r][c]);
 				if (maze[r][c-1] == '0' && maze[r][c+1] == '0') { // no decision point
+					//System.out.println(c);
+					
 					continue;
 				}
 				

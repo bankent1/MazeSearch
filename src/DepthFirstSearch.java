@@ -10,13 +10,15 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class DepthFirstSearch {
-	private static char solChar = '.';
+	private static char solChar = '*';
 	
 	private static void process(char[][] maze) throws FileNotFoundException{
+		//System.out.println("Writing file");
 		PrintWriter outfile = new PrintWriter("DFS.txt");
 		for (int r = 0; r < maze.length; r++) {
 			for (int c = 0; c < maze[r].length; c++) {
 				outfile.print(maze[r][c]);
+				//outfile.print("TEST ");
 			}
 			outfile.println();
 		}
