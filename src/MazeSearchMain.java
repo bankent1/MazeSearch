@@ -40,12 +40,19 @@ public class MazeSearchMain {
 		// searches maze for solution and times result
 		System.out.print("Finding Solution...");
 		long startTime = System.nanoTime();
-		if(DepthFirstSearch.search(mGraph, maze, mGraph.getNode(0), new ArrayList<Node>())) {
+		if(DepthFirstSearch.recSearch(mGraph, maze, mGraph.getNode(0), new ArrayList<Node>())) {
 			long endTime = System.nanoTime();
 			System.out.println("...done");
 			long duration = (endTime - startTime) / 1000000;
 			System.out.println("Solution found in " + duration + "ms");
 		}
+		
+//		if(DepthFirstSearch.iterSearch(mGraph, maze, mGraph.getNode(0), new ArrayList<Node>())) {
+//			long endTime = System.nanoTime();
+//			System.out.println("...done");
+//			long duration = (endTime - startTime) / 1000000;
+//			System.out.println("Solution found in " + duration + "ms");
+//		}
 		else {
 			System.out.println("\nSolution could not be found");
 		}

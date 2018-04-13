@@ -8,13 +8,20 @@
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class DepthFirstSearch {
 	private static char solChar = '*';
 	
-	private static void process(char[][] maze) throws FileNotFoundException{
+	private static void process(char[][] maze){
 		//System.out.println("Writing file");
-		PrintWriter outfile = new PrintWriter("DFS.txt");
+		PrintWriter outfile = null;
+		try {
+			outfile = new PrintWriter("DFS.txt");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		for (int r = 0; r < maze.length; r++) {
 			for (int c = 0; c < maze[r].length; c++) {
 				outfile.print(maze[r][c]);
@@ -31,7 +38,7 @@ public class DepthFirstSearch {
 		int diff = -1;
 		boolean first = true;
 		for (Node curr : sofar) {
-			if (first) {
+			if (first) { // skip first node
 				first = false;
 				continue;
 			}
@@ -69,8 +76,17 @@ public class DepthFirstSearch {
 		return maze;
 	}
 	
-	public static boolean search(MazeGraph mGraph, char[][] maze, Node curr,
-			ArrayList<Node> sofar) throws FileNotFoundException {
+	private static boolean isDeadEnd(Node node) {
+		for (Node n : node.getNeighbors()) {
+			if (!n.checkMarked()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public static boolean recSearch(MazeGraph mGraph, char[][] maze, Node curr,
+			ArrayList<Node> sofar) {
 		int[] loc = curr.getLoc();
 		maze[loc[0]][loc[1]] = solChar;
 		if (curr.getIndex() == (mGraph.size() - 1)) {
@@ -86,7 +102,7 @@ public class DepthFirstSearch {
 		curr.mark();
 		sofar.add(curr);
 		for (Node n : curr.getNeighbors()) {
-			if (search(mGraph, maze, n, sofar)) {
+			if (recSearch(mGraph, maze, n, sofar)) {
 				return true;
 			}
 		}
@@ -96,4 +112,54 @@ public class DepthFirstSearch {
 		return false;
 	}
 	
+	// TODO: Fix iterative search
+	public static boolean iterSearch(MazeGraph mGraph, char[][]maze, Node curr, ArrayList<Node> sofar) {
+		Stack<Node> nodesLeft = new Stack<Node>();
+		nodesLeft.push(curr);
+		
+		while (!nodesLeft.isEmpty()) {
+			curr = nodesLeft.pop();
+
+			
+			if (!curr.checkMarked()) {
+				curr.mark();
+				if (isDeadEnd(curr) && curr.getIndex() != mGraph.size() - 1) {
+					sofar = removeDeadEndPath(curr, sofar);
+					continue;
+				}
+				sofar.add(curr);
+				if (sofar.get(sofar.size()-1).getIndex() == mGraph.size() - 1) {
+					maze = connectNodes(maze, sofar);
+					process(maze);
+					return true;
+				}	
+				
+				for (Node n : curr.getNeighbors()) {
+					if (!n.checkMarked()) {
+						nodesLeft.push(n);
+					}
+				}
+			}
+			
+		} // end while
+		
+
+		
+		return false;
+	}
+	
+	private static ArrayList<Node> removeDeadEndPath(Node curr, ArrayList<Node> sofar) {
+		if (!isDeadEnd(curr)) {
+			return sofar;
+		}
+		
+		sofar.remove(curr);
+		System.out.println("\nRemoved node at loc[" + curr.getLoc()[1] + "][" + curr.getLoc()[1] + "]");
+		for (Node node : curr.getNeighbors()) {
+			removeDeadEndPath(node, sofar);
+		}
+		return sofar;
+	}
+	
 }
+
